@@ -1,0 +1,24 @@
+﻿<!DOCTYPE html>
+<html>
+<head><title>Shortener</title></head>
+<body>
+  <h1>Shorten a URL</h1>
+  <input id="url" placeholder="https://example.com/very/long/link" size="50">
+  <button onclick="shorten()">Shorten</button>
+  <p id="result"></p>
+
+  <script>
+    async function shorten() {
+      const res = await fetch("/api/shorten", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ url: document.getElementById("url").value })
+      });
+      const data = await res.json();
+      document.getElementById("result").innerHTML = data.error
+        ? data.error
+        : `<a href="${data.shortUrl}">${data.shortUrl}</a>`;
+    }
+  </script>
+</body>
+</html>
